@@ -1,6 +1,6 @@
 getData();
 
-setInterval(getData, 10000);
+setInterval(getData, 30000);
 
 
 // Валидация поля ввода
@@ -73,7 +73,7 @@ function getData() {
       exprContainer.innerHTML = "";
       console.log(data)
       data.forEach(item => {
-          CreateExression(item.Status, item.expression, item.Result);
+          CreateExression(item.Status, item.expression, item.Result, item.StartingTime);
       });
     })
     .catch(error => {
@@ -83,7 +83,7 @@ function getData() {
     });
 }
 
-function CreateExression(status, expr, result){
+function CreateExression(status, expr, result, startingTime){
     let exprContainer = document.createElement("div");
     let exprImg = document.createElement("img");
     exprImg.classList.add("expr-img-status");
@@ -95,10 +95,18 @@ function CreateExression(status, expr, result){
         exprImg.src = "imgs/x.png";
     }
     let exprText = document.createElement("p");
-    exprText.classList.add("expr-text")
-    exprText.innerHTML = expr+"="+result;
+    let exprTextTime = document.createElement("p");
+    exprText.classList.add("expr-text");
+    exprTextTime.classList.add("expr-text-time");
+    if (status=="done"){
+      exprText.innerHTML = expr+"="+result;
+    }else{
+      exprText.innerHTML = expr+"=";
+    }
+    exprTextTime.innerHTML = startingTime.split("T")[0]+" "+startingTime.split("T")[1].split(".")[0];
     exprContainer.appendChild(exprImg);
     exprContainer.appendChild(exprText);
+    exprContainer.appendChild(exprTextTime);
     exprContainer.classList.add("expression");
     document.querySelector(".data-container").appendChild(exprContainer);
 }
