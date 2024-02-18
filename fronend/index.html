@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+    <link rel="icon" href="imgs/calculator.png">
+    <title>calc by Romchik</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="title-container">
+        <h1 class="title">Calculator Plus</h1>
+    </div>
+  <div class="container">
+        <div class="block">
+            <div class="input-container">
+                <input type="text" class="expr-input">
+                <img src="imgs/calculator.png" alt="" class="expr-input-img send-btn">
+            </div>
+        </div>
+        <div class="block">
+            <img src="imgs/database.png" alt="" class="data-title">
+            <div class="data-container">
+                <div class="expression">
+                    <img src="imgs/tick.png" alt="" class="expr-img-status">
+                    <p class="expr-text">4+4*4=20</p>
+                </div>
+            </div>
+        </div>
+        <div class="block">
+            <img src="imgs/settings.png" alt="" class="settings-title">
+            <div class="settings-container">
+                <p class="settings-text">+</p>
+                <input type="number" class="settings-input" value="60" min="1">
+            </div>
+            <div class="settings-container">
+                <p class="settings-text">-</p>
+                <input type="number" class="settings-input" value="60" min="1">
+            </div>
+            <div class="settings-container">
+                <p class="settings-text">*</p>
+                <input type="number" class="settings-input" value="60" min="1">
+            </div>
+            <div class="settings-container">
+                <p class="settings-text">/</p>
+                <input type="number" class="settings-input" value="60" min="1">
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
