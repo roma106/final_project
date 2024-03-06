@@ -1,13 +1,9 @@
-version: "3.9"
-
+version: "3.8"
 services:
-
   postgres:
     image: postgres
-
     container_name: postgres
     restart: always
-
     environment:
       POSTGRES_DB: "go_projects"
       POSTGRES_USER: "postgres"
@@ -15,16 +11,24 @@ services:
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - "5432:5432"
-  
-  backend:
+      - 5433:5432
+    networks:
+      - gnetwork
+
+  backend-server:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: server
+    container_name: backend_server
     depends_on:
       - postgres
     ports:
-      - "8080:8080"
-  
+      - 8080:8080
+    networks:
+      - gnetwork
 
+
+
+networks:
+  gnetwork:
+    driver: bridge

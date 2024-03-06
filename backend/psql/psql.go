@@ -19,19 +19,22 @@ type Expr struct {
 }
 
 func ConnectToDB(dbInput string) *sql.DB {
-	psqlInfo := fmt.Sprintf("host=localhost port=5432 user=postgres "+
-		"password=ri106rom dbname=%s sslmode=disable",
-		dbInput)
+	psqlInfo := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable",
+		"postgres",
+		"ri106rom",
+		"postgres", // обновленное имя контейнера PostgreSQL
+		"5432",     // обновленный порт PostgreSQL
+		"go_projects")
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		panic(err)
 	}
 
-	err = db.Ping()
-	if err != nil {
-		fmt.Println("Не удалось подключиться к базе данных")
-		panic(err)
-	}
+	// err = db.Ping()
+	// if err != nil {
+	// 	fmt.Println("Не удалось подключиться к базе данных")
+	// 	panic(err)
+	// }
 	return db
 }
 
