@@ -29,6 +29,7 @@ func ConnectToDB(dbInput string) *sql.DB {
 
 	err = db.Ping()
 	if err != nil {
+		fmt.Println("Не удалось подключиться к базе данных")
 		panic(err)
 	}
 	return db

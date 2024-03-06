@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: postgres
+
+    container_name: postgres
+    restart: always
+
+    environment:
+      POSTGRES_DB: "go_projects"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "ri106rom"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+  
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: server
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+  
+
