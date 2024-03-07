@@ -42,7 +42,6 @@ func AddCorsHeaders(h http.Handler) http.Handler {
 func GetData(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	db := psql.ConnectToDB("go_projects")
-	defer db.Close()
 	data, err := json.Marshal(psql.GetAll(db, "yandex_final"))
 	if err != nil {
 		panic(err)
@@ -60,9 +59,8 @@ func PostData(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 	db := psql.ConnectToDB("go_projects")
-	defer db.Close()
 	// работа со временем операций - не окончена
-	expr := &psql.Expr{Status: "waiting", StartingTime: time.Now(), EndingTime: time.Now().Add(5 * time.Minute), Result: nil}
+	expr := &psql.Expr{Status: "waiting", StartingTime: time.Now(), EndingTime: time.Now().Add(2 * time.Minute), Result: nil}
 	err = json.Unmarshal(data, expr)
 	if err != nil {
 		fmt.Println(err)

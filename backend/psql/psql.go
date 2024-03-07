@@ -3,6 +3,7 @@ package psql
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/Knetic/govaluate"
@@ -19,22 +20,31 @@ type Expr struct {
 }
 
 func ConnectToDB(dbInput string) *sql.DB {
-	psqlInfo := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable",
-		"postgres",
-		"ri106rom",
-		"postgres", // обновленное имя контейнера PostgreSQL
-		"5432",     // обновленный порт PostgreSQL
-		"go_projects")
-	db, err := sql.Open("postgres", psqlInfo)
+	db, err := sql.Open("postgres", "host=postgres port=5432 user=postgres password=ri106rom dbname=go_projects sslmode=disable")
 	if err != nil {
+		log.Printf("[ERROR]: Spawn connection to database was failed: %v", err)
+		panic(err)
+	}
+	err = db.Ping()
+	if err != nil {
+		fmt.Println("Не удалось подключиться к базе данных")
 		panic(err)
 	}
 
-	// err = db.Ping()
-	// if err != nil {
-	// 	fmt.Println("Не удалось подключиться к базе данных")
-	// 	panic(err)
-	// }
+	_, err = db.Exec(`
+		CREATE TABLE IF NOT EXISTS yandex_final (
+			expression character varying COLLATE pg_catalog."default" NOT NULL,
+			status character varying COLLATE pg_catalog."default" NOT NULL,
+			result integer,
+			startingTime timestamp with time zone NOT NULL,
+			endingTime timestamp with time zone NOT NULL,
+			id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 1000 CACHE 1 ),
+			CONSTRAINT yandex_final_pkey PRIMARY KEY (id)
+	)`)
+	if err != nil {
+		fmt.Println("Не удалось создать таблицу")
+		panic(err)
+	}
 	return db
 }
 
@@ -56,7 +66,7 @@ func GetAll(db *sql.DB, table string) []Expr {
 }
 
 func Set(db *sql.DB, table string, ex *Expr) error {
-	query := "INSERT INTO " + table + " (\"Expression\", \"Status\", \"StartingTime\", \"EndingTime\") VALUES ($1, $2, $3, $4)"
+	query := "INSERT INTO " + table + " (expression, status, startingTime, endingTime) VALUES ($1, $2, $3, $4)"
 	_, err := db.Exec(query, ex.Expression, ex.Status, ex.StartingTime, ex.EndingTime)
 	if err != nil {
 		return err
@@ -77,7 +87,7 @@ func Set(db *sql.DB, table string, ex *Expr) error {
 
 func CheckTiming(db *sql.DB, ex Expr) (string, interface{}) {
 	if !ex.EndingTime.After(time.Now()) {
-		updateStmt, err := db.Prepare("UPDATE yandex_final SET \"Result\" = $1, \"Status\" = $2 WHERE \"ID\" = $3")
+		updateStmt, err := db.Prepare("UPDATE yandex_final SET result = $1, status = $2 WHERE id = $3")
 		if err != nil {
 			fmt.Println("Ошибка при подготовке запроса обновления:", err)
 			return "failed", nil
