@@ -11,7 +11,7 @@
 ## Как запустить приложение?
 
 ### Этап 0
-Проект обернут в Docker, поэтому для установки и запуска нужно скачать [его](https://www.docker.com/products/docker-desktop/) (перейдите по ссылке и установите). Проверить работает ли Docker Engine можно введя в терминал:  
+Проект обернут в Docker, поэтому для установки и запуска нужно скачать [его](https://www.docker.com/products/docker-desktop/) (перейдите по ссылке и установите).  Проверить работает ли Docker Engine можно введя в терминал:  
 ```
 docker
 ```  
@@ -29,11 +29,11 @@ docker-compose up
 
 ## Работа с приложением
 После открытия файла, Вы увидите простую страничку с интерфейсом.  
-![GUI]([https://github.com/roma106/final_project/frontend/imgs/screenshot-gui1.png](https://github.com/roma106/final_project/blob/main/frontend/imgs/screenshot-gui1.png) "GUI приложения")
+![GUI]([https://github.com/roma106/final_project/frontend/imgs/screenshot-gui1.png](https://github.com/roma106/final_project/blob/main/frontend/imgs/screenshot-gui1.png) "GUI приложения")  
 Если в среднем окне появилась ошибка <span style="color: red">failed to fetch</span>, значит сервер работает некорректно(см. терминал и/или пишите мне).  
 Введите математическое выражение в поле ввода (левое окно) без знака "=". Нажмите на кнопку "Посчитать"(калькулятор).  
 Ваше выражение должно появится в среднем окне (база данных выражений), с иконкой ожидания. Выражение будет посчитано через 2 минуты.
->_*two hours later*_
+>_*two hours later*_  
 Если выражение успешно посчитано, то появится зеленая иконка и результат. В противном случае - красная иконка ошибки.  
 
 Правое окно (настройка времени выполнения математических операций) не функционирует.
